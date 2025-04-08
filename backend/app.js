@@ -4,6 +4,10 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const productRoute = require("./routes/product");
 const authRoute = require("./routes/auth");
+const cartRoute = require("./routes/cart");
+const userRoute = require("./routes/user");
+const orderRoute = require("./routes/orders");
+const stripeRoute = require("./routes/stripe");
 
 
 const cors = require("cors");
@@ -24,7 +28,10 @@ app.use(express.json());
 
 app.use("/api/products", productRoute);
 app.use("/api/auth", authRoute);
-
+app.use("/api/cart",cartRoute);
+app.use("/api/users", userRoute);
+app.use("/api/orders", orderRoute);
+app.use("/api/checkout", stripeRoute);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log("A backend szerver fut!");

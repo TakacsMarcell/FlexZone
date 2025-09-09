@@ -7,26 +7,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Logout } from "../redux/apiCalls";
 
-
 const jumpEffect = keyframes`
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px); 
-  }
-  100% {
-    transform: translateY(0);
-  }
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
 `;
 
 const Container = styled.div`
   height: 60px;
+  background: black;
   position: relative;
+
   @media only screen and (max-width: 768px) {
     height: 50px;
   }
-  background: black;
 `;
 
 const Wrapper = styled.div`
@@ -35,6 +29,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   position: relative;
+
   @media only screen and (max-width: 768px) {
     padding: 10px 0px;
   }
@@ -44,24 +39,6 @@ const Left = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-`;
-
-const Profile = styled.span`
-  font-size: 14px;
-  cursor: pointer;
-  margin-right: 25px; 
-  margin-left: 15px; 
-  a {
-    color: black;
-    text-decoration: none;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-  }
-
-  a:hover {
-    color: teal; /* Hover szín */
-  }
 `;
 
 const Center = styled.div`
@@ -76,9 +53,9 @@ const Logo = styled.h1`
   margin: 0;
   background: linear-gradient(90deg, #65c466, #a9a9a9);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  background-clip: text; 
-  color: transparent; 
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 
   @media only screen and (max-width: 768px) {
     font-size: 24px;
@@ -94,6 +71,7 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
   @media only screen and (max-width: 768px) {
     justify-content: flex-end;
   }
@@ -107,15 +85,15 @@ const MenuItem = styled.div`
   display: flex;
   align-items: center;
   font-weight: bold;
-  color: white; 
+  color: white;
   transition: color 0.3s;
 
   &:hover {
-    color: #65C466; 
+    color: #65C466;
   }
 
   &:hover > div {
-    display: flex; 
+    display: flex;
   }
 
   @media only screen and (max-width: 768px) {
@@ -123,11 +101,15 @@ const MenuItem = styled.div`
   }
 
   a {
-    color: inherit; 
+    color: inherit;
     text-decoration: none;
     padding: 10px;
     display: flex;
     align-items: center;
+  }
+
+  a:hover {
+    color: inherit;
   }
 `;
 
@@ -145,12 +127,13 @@ const DropdownMenu = styled.div`
     padding: 10px 20px;
     text-align: left;
     text-decoration: none;
-    color:  #d3d3d3;
+    background-color: black;
+    color: white;
     transition: background-color 0.3s;
   }
 
   a:hover {
-    background-color: #f1f1f1;
+    background-color: white;
     color: black;
   }
 `;
@@ -159,19 +142,20 @@ const HamburgerMenu = styled.div`
   color: #d3d3d3;
   display: none;
   cursor: pointer;
+
   @media only screen and (max-width: 768px) {
     display: block;
   }
 `;
 
 const DropdownMenuMobile = styled(DropdownMenu)`
-  display: ${(props) => (props.open ? "flex" : "none")}; 
-  width: 100vw; 
-  left: 0; 
-  top: 50px; 
-  border: none; 
-  background-color: black; 
-  position: absolute; 
+  display: ${(props) => (props.open ? "flex" : "none")};
+  width: 100vw;
+  left: 0;
+  top: 50px;
+  border: none;
+  background-color: black;
+  position: absolute;
 `;
 
 const Navbar = () => {
@@ -189,29 +173,29 @@ const Navbar = () => {
     e.preventDefault();
     localStorage.clear();
     Logout(dispatch);
-    history.push("/"); 
+    history.push("/");
   };
 
   return (
     <Container>
       <Wrapper>
         <Left>
-          <Profile>
-            
-            <Link to="/profile" style={!user ? { display: "none" } : {}}>PROFIL</Link> 
-          </Profile>
+          <MenuItem style={!user ? { display: "none" } : {}}>
+            <Link to="/profile">PROFIL</Link>
+          </MenuItem>
         </Left>
+
         <Center>
           <Link style={{ textDecoration: "none" }} to="/">
             <Logo>FLEXZONE</Logo>
           </Link>
         </Center>
+
         <Right>
           <HamburgerMenu onClick={handleMenuClick}>
             <Menu style={{ fontSize: "24px" }} />
           </HamburgerMenu>
 
-          
           <MenuItem style={!user ? { display: "none" } : {}}>
             <Link>
               EDZÉS
@@ -224,25 +208,24 @@ const Navbar = () => {
             </DropdownMenu>
           </MenuItem>
 
-          
-          <Link style={{ textDecoration: "none" }} to={"/register"}>
+          <Link style={{ textDecoration: "none" }} to="/register">
             <MenuItem style={user ? { display: "none" } : {}}>
               REGISZTRÁCIÓ
             </MenuItem>
           </Link>
-          <Link style={{ textDecoration: "none" }} to={"/login"}>
+          <Link style={{ textDecoration: "none" }} to="/login">
             <MenuItem style={user ? { display: "none" } : {}}>
               BEJELENTKEZÉS
             </MenuItem>
           </Link>
 
-          
           <MenuItem
             style={!user ? { display: "none" } : {}}
-            onClick={handleLogout} 
+            onClick={handleLogout}
           >
             KIJELENTKEZÉS
           </MenuItem>
+
           <MenuItem>
             <Link to="/cart">
               <Badge badgeContent={quantity} color="primary" style={!user ? { display: "none" } : {}}>
@@ -253,9 +236,7 @@ const Navbar = () => {
         </Right>
       </Wrapper>
 
-      
       <DropdownMenuMobile open={menuOpen}>
-
         {user && (
           <>
             <Link to="/edzestervek" onClick={handleMenuClick}>EDZÉSTERVEK</Link>
@@ -264,21 +245,18 @@ const Navbar = () => {
             <Link to="/profile" onClick={handleMenuClick}>PROFIL</Link>
           </>
         )}
-
         {!user && (
           <>
             <Link to="/login" onClick={handleMenuClick}>BEJELENTKEZÉS</Link>
             <Link to="/register" onClick={handleMenuClick}>REGISZTRÁCIÓ</Link>
           </>
         )}
-
         {user && (
-      <Link to="/cart" onClick={handleMenuClick}>
-          KOSÁR
-      </Link>
-)}
-
-        {user && <Link to="/" onClick={handleLogout}>KIJELENTKEZÉS</Link>}
+          <Link to="/cart" onClick={handleMenuClick}>KOSÁR</Link>
+        )}
+        {user && (
+          <Link to="/" onClick={handleLogout}>KIJELENTKEZÉS</Link>
+        )}
       </DropdownMenuMobile>
     </Container>
   );

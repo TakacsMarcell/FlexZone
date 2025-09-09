@@ -56,7 +56,7 @@ const Slide = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-  background-color: ${(props) => props.bg};
+  background: linear-gradient(to bottom, #000000, #65C466);
 
   @media (max-width: 538px) {
     flex-direction: column;

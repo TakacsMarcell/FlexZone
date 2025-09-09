@@ -3,9 +3,14 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { useSelector } from "react-redux";
 import React from 'react';
-import { useEffect } from "react";
-import { updateUserRequestToken } from "./requestMethods"; 
 import { GlobalStyle } from "./GlobalStyles"; 
+import Cart from "./pages/Cart";
+import WebShop from "./pages/Webshop";
+import Profile from "./pages/Profile";
+import Product from "./pages/Product";
+import ProductList from "./pages/ProductList";
+import Nutrition from "./pages/Nutrition";
+import Success from "./pages/Success";
 
 import {
   BrowserRouter as Router,
@@ -14,10 +19,9 @@ import {
   Redirect
 } from "react-router-dom";
 
+
 const App = () => {
-  useEffect(() => {
-    updateUserRequestToken();
-  }, []);
+  
   
   const user = useSelector(state => state.user.currentUser);
   
@@ -37,6 +41,27 @@ const App = () => {
           </Route>
           {user ? (
             <>
+            <Route path="/products/:category">
+              <ProductList />
+            </Route>
+            <Route path="/product/:id">
+              <Product />
+            </Route>
+            <Route path="/cart">
+              <Cart />
+            </Route>
+            <Route path="/webshop">
+              <WebShop />
+            </Route>
+            <Route path="/profile">
+              <Profile />
+            </Route>
+            <Route path="/taplalkozas">
+              <Nutrition />
+            </Route>
+            <Route path="/success">
+              <Success />
+            </Route>   
             </>
           ) : (
             <Redirect to="/login" />

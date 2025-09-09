@@ -10,12 +10,21 @@ import {
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+const colors = {
+  green: "#65C466",
+  white: "#FFFFFF",
+  black: "#000000",
+  darkGray: "#1c1c1c",
+  lightGray: "#cccccc",
+  silver: "#A9A9A9",
+};
+
 const Container = styled.footer`
-  background-color: #f1f1f1;
+  background: black;
+  color: ${colors.lightGray};
   display: flex;
   flex-wrap: wrap;
   padding: 40px 60px;
-  color: #333;
   justify-content: space-between;
 
   @media (max-width: 768px) {
@@ -36,14 +45,19 @@ const Section = styled.div`
 const Logo = styled.h1`
   font-weight: 700;
   font-size: 28px;
-  color: #65C466;
-  text-shadow: 1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black;
+  color: ${colors.green};
+  text-shadow:
+    1px 1px 0 ${colors.black},
+    -1px -1px 0 ${colors.black},
+    1px -1px 0 ${colors.black},
+    -1px 1px 0 ${colors.black};
 `;
 
 const Desc = styled.p`
   margin: 20px 0;
   font-size: 14px;
   line-height: 1.6;
+  color: ${colors.lightGray};
 `;
 
 const SocialContainer = styled.div`
@@ -55,22 +69,25 @@ const SocialIcon = styled.a`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  color: white;
+  color: ${colors.white};
   background-color: ${(props) => `#${props.color}`};
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.3s ease;
   text-decoration: none;
+  box-shadow: 0 0 8px rgba(0,0,0,0.6);
 
   &:hover {
     transform: scale(1.1);
+    filter: brightness(1.1);
   }
 `;
 
 const Title = styled.h3`
   margin-bottom: 25px;
   font-size: 18px;
+  color: ${colors.green};
 `;
 
 const GridList = styled.div`
@@ -84,11 +101,11 @@ const GridItem = styled.div`
 
   a {
     text-decoration: none;
-    color: #333;
+    color: ${colors.lightGray};
     transition: color 0.3s ease;
 
     &:hover {
-      color: #65C466;
+      color: ${colors.green};
     }
   }
 `;
@@ -98,11 +115,18 @@ const ContactItem = styled.div`
   align-items: center;
   margin-bottom: 15px;
   font-size: 14px;
+  color: ${colors.lightGray};
+
+  svg {
+    margin-right: 10px;
+    color: ${colors.green};
+  }
 `;
 
 const Payment = styled.img`
   width: 60%;
   margin-top: 10px;
+  filter: brightness(0.9);
 `;
 
 const Footer = () => {
@@ -121,6 +145,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             color="3B5999"
+            aria-label="Facebook"
           >
             <Facebook />
           </SocialIcon>
@@ -129,6 +154,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             color="E4405F"
+            aria-label="Instagram"
           >
             <Instagram />
           </SocialIcon>
@@ -137,6 +163,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             color="55ACEE"
+            aria-label="Twitter"
           >
             <Twitter />
           </SocialIcon>
@@ -145,6 +172,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             color="E60023"
+            aria-label="Pinterest"
           >
             <Pinterest />
           </SocialIcon>
@@ -154,31 +182,45 @@ const Footer = () => {
       <Section>
         <Title>Hasznos linkek</Title>
         <GridList>
-          <GridItem><Link to="/">Főoldal</Link></GridItem>
-          <GridItem><Link to="/">Fehérjék</Link></GridItem>
-          <GridItem><Link to="/">Kreatinok</Link></GridItem>
-          <GridItem><Link to="/">Vitaminok</Link></GridItem>
-          <GridItem><Link to="/">Kosár</Link></GridItem>
-          <GridItem><Link to="/login">Bejelentkezés</Link></GridItem>
-          <GridItem><Link to="/register">Regisztráció</Link></GridItem>
+          <GridItem>
+            <Link to="/">Főoldal</Link>
+          </GridItem>
+          <GridItem>
+            <Link to="/products/feherje">Fehérjék</Link>
+          </GridItem>
+          <GridItem>
+            <Link to="/products/kreatin">Kreatinok</Link>
+          </GridItem>
+          <GridItem>
+            <Link to="/products/vitamin">Vitaminok</Link>
+          </GridItem>
+          <GridItem>
+            <Link to="/cart">Kosár</Link>
+          </GridItem>
+          <GridItem>
+            <Link to="/login">Bejelentkezés</Link>
+          </GridItem>
+          <GridItem>
+            <Link to="/register">Regisztráció</Link>
+          </GridItem>
         </GridList>
       </Section>
 
       <Section>
         <Title>Kapcsolat</Title>
         <ContactItem>
-          <Room style={{ marginRight: "10px", color: "#65C466" }} />
+          <Room />
           9024 Győr, Kossuth Lajos utca 1.
         </ContactItem>
         <ContactItem>
-          <Phone style={{ marginRight: "10px", color: "#65C466" }} />
+          <Phone />
           +36 30 666 6666
         </ContactItem>
         <ContactItem>
-          <MailOutline style={{ marginRight: "10px", color: "#65C466" }} />
+          <MailOutline />
           flexzone@gmail.com
         </ContactItem>
-        <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
+        <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" alt="Fizetési módok" />
       </Section>
     </Container>
   );

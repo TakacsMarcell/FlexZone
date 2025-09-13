@@ -109,9 +109,14 @@ const Success = () => {
           })),
           amount: cart.total,
           address: data.billing_details.address,
+          email: currentUser.email, // fontos az email miatt
         });
+
+        // 🔥 Order ID azonnal megjelenik
         setOrderId(res.data._id);
-        dispatch(clearCart()); 
+
+        // 🔥 Kosár azonnal törlődik
+        dispatch(clearCart());
       } catch (err) {
         console.error("Error creating order:", err);
       }

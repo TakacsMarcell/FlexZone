@@ -9,6 +9,7 @@ import {
 } from "@material-ui/icons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const colors = {
   green: "#65C466",
@@ -130,6 +131,8 @@ const Payment = styled.img`
 `;
 
 const Footer = () => {
+  const user = useSelector((state) => state.user.currentUser);
+
   return (
     <Container>
       <Section>
@@ -140,40 +143,16 @@ const Footer = () => {
           hogy elérd a kitűzött céljaidat. Kezdd el még ma az életmódváltást!
         </Desc>
         <SocialContainer>
-          <SocialIcon
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            color="3B5999"
-            aria-label="Facebook"
-          >
+          <SocialIcon href="https://www.facebook.com/profile.php?id=61580430430051" target="_blank" rel="noopener noreferrer" color="3B5999">
             <Facebook />
           </SocialIcon>
-          <SocialIcon
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            color="E4405F"
-            aria-label="Instagram"
-          >
+          <SocialIcon href="https://www.instagram.com/flexzonehun/" target="_blank" rel="noopener noreferrer" color="E4405F">
             <Instagram />
           </SocialIcon>
-          <SocialIcon
-            href="https://twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            color="55ACEE"
-            aria-label="Twitter"
-          >
+          <SocialIcon href="https://x.com/FlexZoneHun" target="_blank" rel="noopener noreferrer" color="55ACEE">
             <Twitter />
           </SocialIcon>
-          <SocialIcon
-            href="https://pinterest.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            color="E60023"
-            aria-label="Pinterest"
-          >
+          <SocialIcon href="https://hu.pinterest.com/flexzonehun/" target="_blank" rel="noopener noreferrer" color="E60023">
             <Pinterest />
           </SocialIcon>
         </SocialContainer>
@@ -182,43 +161,31 @@ const Footer = () => {
       <Section>
         <Title>Hasznos linkek</Title>
         <GridList>
-          <GridItem>
-            <Link to="/">Főoldal</Link>
-          </GridItem>
-          <GridItem>
-            <Link to="/products/feherje">Fehérjék</Link>
-          </GridItem>
-          <GridItem>
-            <Link to="/products/kreatin">Kreatinok</Link>
-          </GridItem>
-          <GridItem>
-            <Link to="/products/vitamin">Vitaminok</Link>
-          </GridItem>
-          <GridItem>
-            <Link to="/cart">Kosár</Link>
-          </GridItem>
-          <GridItem>
-            <Link to="/login">Bejelentkezés</Link>
-          </GridItem>
-          <GridItem>
-            <Link to="/register">Regisztráció</Link>
-          </GridItem>
+          <GridItem><Link to="/">Főoldal</Link></GridItem>
+          <GridItem><Link to="/products/feherje">Fehérjék</Link></GridItem>
+          <GridItem><Link to="/products/kreatin">Kreatinok</Link></GridItem>
+          <GridItem><Link to="/products/vitamin">Vitaminok</Link></GridItem>
+          <GridItem><Link to="/cart">Kosár</Link></GridItem>
+
+          {!user && (
+            <>
+              <GridItem><Link to="/login">Bejelentkezés</Link></GridItem>
+              <GridItem><Link to="/register">Regisztráció</Link></GridItem>
+            </>
+          )}
         </GridList>
       </Section>
 
       <Section>
         <Title>Kapcsolat</Title>
         <ContactItem>
-          <Room />
-          9024 Győr, Kossuth Lajos utca 1.
+          <Room /> 9024 Győr, Kossuth Lajos utca 1.
         </ContactItem>
         <ContactItem>
-          <Phone />
-          +36 30 666 6666
+          <Phone /> +36 30 666 6666
         </ContactItem>
         <ContactItem>
-          <MailOutline />
-          flexzone@gmail.com
+          <MailOutline /> flexzone@gmail.com
         </ContactItem>
         <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" alt="Fizetési módok" />
       </Section>

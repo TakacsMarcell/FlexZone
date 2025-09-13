@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart } from "../redux/cartRedux";
+import { clearCart, increaseQuantity, decreaseQuantity, removeProduct } from "../redux/cartRedux";
 import StripeCheckout from "react-stripe-checkout";
 import { userRequest } from "../requestMethods";
 import { useEffect, useState } from "react";
@@ -146,6 +146,34 @@ const ProductAmountContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  gap: 10px;
+`;
+
+const QuantityButton = styled.button`
+  background-color: ${colors.green};
+  border: none;
+  padding: 5px 10px;
+  font-size: 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${colors.white};
+    color: ${colors.black};
+  }
+`;
+
+const RemoveButton = styled.button`
+  margin-top: 10px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: green;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    background-color: lightgray;
+    color: black;
+  }
 `;
 
 const ProductAmount = styled.div`
@@ -229,14 +257,11 @@ const Button = styled.button`
   }
 `;
 
-
-
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const [stripeToken, setStripeToken] = useState(null);
   const history = useHistory();
-  
 
   const onToken = (token) => {
     setStripeToken(token);
@@ -247,9 +272,9 @@ const Cart = () => {
       try {
         const res = await userRequest.post("/checkout/payment", {
           tokenId: stripeToken.id,
-          amount: cart.total*100,
+          amount: cart.total * 100,
         });
-        
+
         history.replace("/success", {
           stripeData: res.data,
           products: cart,
@@ -268,87 +293,92 @@ const Cart = () => {
       <Announcement />
       <Navbar />
       <Wrapper>
-  <Title>KOSÁR</Title>
-  <Top>
-    <Link to="/webshop">
-      <TopButton>VÁSÁRLÁS FOLYTATÁSA</TopButton>
-    </Link>
-    <TopButton onClick={handleDelete} type="filled">
-      KOSÁR TÖRLÉSE
-    </TopButton>
-  </Top>
+        <Title>KOSÁR</Title>
+        <Top>
+          <Link to="/webshop">
+            <TopButton>VÁSÁRLÁS FOLYTATÁSA</TopButton>
+          </Link>
+          <TopButton onClick={handleDelete} type="filled">
+            KOSÁR TÖRLÉSE
+          </TopButton>
+        </Top>
 
-  {cart.total === 0 ? (
-    <EmptyWrapper>
-      <EmptyText>A kosarad jelenleg üres</EmptyText>
-    </EmptyWrapper>
-  ) : (
-    <Bottom>
-      <Info>
-        {cart.products.map((product) => (
-          <Product key={product._id}>
-            <ProductDetail>
-              <Image src={product.img} />
-              <Details>
-                <ProductName>
-                  <b>Termék neve:</b> {product.title}
-                </ProductName>
-                <ProductId>
-                  <b>Termék azonosító:</b> {product._id}
-                </ProductId>
-                {product.title.toLowerCase().includes("edzésterv") ? null : (
-                  <ProductSize>
-                    <b>Választott mennyiség:</b> {product.quantitygram}
-                  </ProductSize>
-                )}
-              </Details>
-            </ProductDetail>
-            <PriceDetail>
-              <ProductAmountContainer>
-                <ProductAmount>{product.quantity}</ProductAmount>
-              </ProductAmountContainer>
-              <ProductPrice>
-                {product.price * product.quantity} Ft
-              </ProductPrice>
-            </PriceDetail>
-          </Product>
-        ))}
-        <Hr />
-      </Info>
-      <Summary>
-        <SummaryTitle>RENDELÉS ÖSSZEGZÉSE</SummaryTitle>
-        <SummaryItem>
-          <SummaryItemText>TERMÉKEK ÁRA</SummaryItemText>
-          <SummaryItemPrice>{cart.total} Ft</SummaryItemPrice>
-        </SummaryItem>
-        <SummaryItem>
-          <SummaryItemText>SZÁLLÍTÁSI DÍJ</SummaryItemText>
-          <SummaryItemPrice>0 Ft</SummaryItemPrice>
-        </SummaryItem>
-        <SummaryItem type="total">
-          <SummaryItemText>TELJES ÁR</SummaryItemText>
-          <SummaryItemPrice>{cart.total} Ft</SummaryItemPrice>
-        </SummaryItem>
-        <StripeCheckout
-          name="FLEXZONE"
-          image="/images/flexzone_circle.png"
-          billingAddress
-          shippingAddress
-          description={`A végösszeg ${cart.total} Ft`}
-          amount={cart.total * 100}
-          token={onToken}
-          stripeKey={KEY}
-          currency="HUF"
-        >
-          <Button>MEGRENDELÉS</Button>
-        </StripeCheckout>
-      </Summary>
-    </Bottom>
-  )}
-</Wrapper>
+        {cart.total === 0 ? (
+          <EmptyWrapper>
+            <EmptyText>A kosarad jelenleg üres</EmptyText>
+          </EmptyWrapper>
+        ) : (
+          <Bottom>
+            <Info>
+              {cart.products.map((product) => (
+                <Product key={product._id}>
+                  <ProductDetail>
+                    <Image src={product.img} />
+                    <Details>
+                      <ProductName>
+                        <b>Termék neve:</b> {product.title}
+                      </ProductName>
+                      <ProductId>
+                        <b>Termék azonosító:</b> {product._id}
+                      </ProductId>
+                      {product.title.toLowerCase().includes("edzésterv") ? null : (
+                        <ProductSize>
+                          <b>Választott mennyiség:</b> {product.quantitygram}
+                        </ProductSize>
+                      )}
+                    </Details>
+                  </ProductDetail>
+                  <PriceDetail>
+                    <ProductAmountContainer>
+                      <QuantityButton onClick={() => dispatch(decreaseQuantity(product._id))}>-</QuantityButton>
+                      <ProductAmount>{product.quantity}</ProductAmount>
+                      <QuantityButton onClick={() => dispatch(increaseQuantity(product._id))}>+</QuantityButton>
+                    </ProductAmountContainer>
+                    <ProductPrice>
+                      {product.price * product.quantity} Ft
+                    </ProductPrice>
+                    <RemoveButton onClick={() => dispatch(removeProduct(product._id))}>
+                      Törlés
+                    </RemoveButton>
+                  </PriceDetail>
+                </Product>
+              ))}
+              <Hr />
+            </Info>
+            <Summary>
+              <SummaryTitle>RENDELÉS ÖSSZEGZÉSE</SummaryTitle>
+              <SummaryItem>
+                <SummaryItemText>TERMÉKEK ÁRA</SummaryItemText>
+                <SummaryItemPrice>{cart.total} Ft</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem>
+                <SummaryItemText>SZÁLLÍTÁSI DÍJ</SummaryItemText>
+                <SummaryItemPrice>0 Ft</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem type="total">
+                <SummaryItemText>TELJES ÁR</SummaryItemText>
+                <SummaryItemPrice>{cart.total} Ft</SummaryItemPrice>
+              </SummaryItem>
+              <StripeCheckout
+                name="FLEXZONE"
+                image="/images/flexzone_circle.png"
+                billingAddress
+                shippingAddress
+                description={`A végösszeg ${cart.total} Ft`}
+                amount={cart.total * 100}
+                token={onToken}
+                stripeKey={KEY}
+                currency="HUF"
+              >
+                <Button>MEGRENDELÉS</Button>
+              </StripeCheckout>
+            </Summary>
+          </Bottom>
+        )}
+      </Wrapper>
       <Footer />
     </Container>
   );
 };
 
-export default Cart; 
+export default Cart;

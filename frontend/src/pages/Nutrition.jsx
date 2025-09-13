@@ -314,7 +314,7 @@ const Nutrition = () => {
       <Navbar />
       <Wrapper>
         <Container>
-          <Title>Táplálkozási Ajánlások</Title>
+          <Title>Táplálkozási ajánlások</Title>
 
           <Grid>
             {["maintenance", "weightLoss", "weightGain"].map((type) => (

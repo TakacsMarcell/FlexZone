@@ -26,7 +26,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
   width: 30%;
   padding: 30px;
-  background-color: rgba(255, 255, 255, 0.9); // áttetsző háttér
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -82,15 +82,9 @@ const Button = styled.button`
   font-weight: bold;
 
   transition: all 0.3s ease;
-  &:hover {
-    background-color: #4DAA52;
-  }
+  &:hover { background-color: #4DAA52; }
 
-  ${mobile({
-    width: "70%",
-    padding: "12px",
-    fontSize: "15px",
-  })}
+  ${mobile({ width: "70%", padding: "12px", fontSize: "15px" })}
 `;
 
 const StyledLink = styled(RouterLink)`
@@ -125,19 +119,11 @@ const Login = () => {
       <Wrapper>
         <Title>BEJELENTKEZÉS</Title>
         <Form>
-          <Input
-            required
-            placeholder="Felhasználónév"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <Input
-            required
-            type="password"
-            placeholder="Jelszó"
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <Input required placeholder="Felhasználónév" onChange={(e) => setUsername(e.target.value)} />
+          <Input required type="password" placeholder="Jelszó" onChange={(e) => setPassword(e.target.value)} />
           <Button onClick={handleClick}>BEJELENTKEZÉS</Button>
           {error && <ErrorMessage>Hibás felhasználónév vagy jelszó!</ErrorMessage>}
+          <StyledLink to="/forgot-password">Elfelejtetted a jelszavad?</StyledLink>
           <StyledLink to="/register">REGISZTRÁCIÓ</StyledLink>
         </Form>
         <StyledLink to="/">VISSZA A FŐOLDALRA</StyledLink>

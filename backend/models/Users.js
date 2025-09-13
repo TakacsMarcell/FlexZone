@@ -7,10 +7,13 @@ const UserSchema = new mongoose.Schema(
     password: { type: String, required: true },
     isAdmin:  { type: Boolean, default: false },
     img:      { type: String },
-    weight: { type: Number },
-    height: { type: Number },
-    gender: { type: String },
+    weight:   { type: Number },
+    height:   { type: Number },
+    gender:   { type: String },
     targetWeight: { type: Number, default: null },
+
+    resetPasswordToken:  { type: String, default: null },
+    resetPasswordExpire: { type: Date,   default: null },
   },
   { timestamps: true }
 );

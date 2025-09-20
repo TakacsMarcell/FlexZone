@@ -202,7 +202,7 @@ const Navbar = () => {
               <KeyboardArrowDown style={{ fontSize: "16px", marginLeft: "5px" }} />
             </Link>
             <DropdownMenu>
-              <Link to="/edzestervek">EDZÉSTERVEK</Link>
+              <Link to="/workouts">EDZÉSTERVEK</Link>
               <Link to="/taplalkozas">TÁPLÁLKOZÁS</Link>
               <Link to="/webshop">WEBSHOP</Link>
             </DropdownMenu>
@@ -239,7 +239,7 @@ const Navbar = () => {
       <DropdownMenuMobile open={menuOpen}>
         {user && (
           <>
-            <Link to="/edzestervek" onClick={handleMenuClick}>EDZÉSTERVEK</Link>
+            <Link to="/workouts" onClick={handleMenuClick}>EDZÉSTERVEK</Link>
             <Link to="/taplalkozas" onClick={handleMenuClick}>TÁPLÁLKOZÁS</Link>
             <Link to="/webshop" onClick={handleMenuClick}>WEBSHOP</Link>
             <Link to="/profile" onClick={handleMenuClick}>PROFIL</Link>

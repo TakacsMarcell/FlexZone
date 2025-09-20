@@ -3,7 +3,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { useSelector } from "react-redux";
 import React from 'react';
-import { GlobalStyle } from "./GlobalStyles"; 
+import { GlobalStyle } from "./GlobalStyles";
 import Cart from "./pages/Cart";
 import WebShop from "./pages/Webshop";
 import Profile from "./pages/Profile";
@@ -13,6 +13,7 @@ import Nutrition from "./pages/Nutrition";
 import Success from "./pages/Success";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Workouts from "./pages/Workouts";
 
 import {
   BrowserRouter as Router,
@@ -67,6 +68,9 @@ const App = () => {
               </Route>
               <Route path="/success">
                 <Success />
+              </Route>
+              <Route path="/workouts">
+                <Workouts />
               </Route>
             </>
           ) : (

@@ -1,21 +1,21 @@
 export const sliderItems = [
     {
       id: 1,
-      img: "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800",
+      img: "https://images7.alphacoders.com/130/1308025.jpg",
       title: "Edzéstervek",
       desc: "Testépítéshez",
       bg: "f5fafd",
     },
     {
       id: 2,
-      img: "https://media.istockphoto.com/id/1132086660/photo/side-view-of-beautiful-muscular-woman-running-on-treadmill.jpg?s=612x612&w=0&k=20&c=5Vq_BJjG7sbIyKIP-Adu0pChReDXm0dC7BVPvto2M0I=",
+      img: "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/rockcms/2021-12/211208-working-out-stock-mn-1310-55e1c7.jpg",
       title: "Edzéstervek",
       desc: "Kardió és egészséges életmód",
       bg: "fcf1ed",
     },
     {
       id: 3,
-      img: "https://www.vitalhealthnutrition.co.uk/wp-content/uploads/2020/01/Canva-healthy-food-healthy-lifestyle-concept-with-exercise-weights-1080x675.jpg",
+      img: "https://www.naturemade.com/cdn/shop/articles/healthy-foods-to-eat.jpg?v=1611988563",
       title: "Tudatos táplálkozás",
       desc: "Étrendek és étrend kiegészítők",
       bg: "fbf0f4",

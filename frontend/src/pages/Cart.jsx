@@ -288,6 +288,8 @@ const Cart = () => {
     dispatch(clearCart());
   };
 
+ const getKey = (p) => `${p._id}_${p.quantitygram || ""}`;
+
   return (
     <Container>
       <Announcement />
@@ -310,39 +312,42 @@ const Cart = () => {
         ) : (
           <Bottom>
             <Info>
-              {cart.products.map((product) => (
-                <Product key={product._id}>
-                  <ProductDetail>
-                    <Image src={product.img} />
-                    <Details>
-                      <ProductName>
-                        <b>Termék neve:</b> {product.title}
-                      </ProductName>
-                      <ProductId>
-                        <b>Termék azonosító:</b> {product._id}
-                      </ProductId>
-                      {product.title.toLowerCase().includes("edzésterv") ? null : (
-                        <ProductSize>
-                          <b>Választott mennyiség:</b> {product.quantitygram}
-                        </ProductSize>
-                      )}
-                    </Details>
-                  </ProductDetail>
-                  <PriceDetail>
-                    <ProductAmountContainer>
-                      <QuantityButton onClick={() => dispatch(decreaseQuantity(product._id))}>-</QuantityButton>
-                      <ProductAmount>{product.quantity}</ProductAmount>
-                      <QuantityButton onClick={() => dispatch(increaseQuantity(product._id))}>+</QuantityButton>
-                    </ProductAmountContainer>
-                    <ProductPrice>
-                      {product.price * product.quantity} Ft
-                    </ProductPrice>
-                    <RemoveButton onClick={() => dispatch(removeProduct(product._id))}>
-                      Törlés
-                    </RemoveButton>
-                  </PriceDetail>
-                </Product>
-              ))}
+              {cart.products.map((product) => {
+                const key = getKey(product);
+                return (
+                  <Product key={key}>
+                    <ProductDetail>
+                      <Image src={product.img} />
+                      <Details>
+                        <ProductName>
+                          <b>Termék neve:</b> {product.title}
+                        </ProductName>
+                        <ProductId>
+                          <b>Termék azonosító:</b> {product._id}
+                        </ProductId>
+                        {product.title.toLowerCase().includes("edzésterv") ? null : (
+                          <ProductSize>
+                            <b>Választott mennyiség:</b> {product.quantitygram}
+                          </ProductSize>
+                        )}
+                      </Details>
+                    </ProductDetail>
+                    <PriceDetail>
+                      <ProductAmountContainer>
+                        <QuantityButton onClick={() => dispatch(decreaseQuantity(key))}>-</QuantityButton>
+                        <ProductAmount>{product.quantity}</ProductAmount>
+                        <QuantityButton onClick={() => dispatch(increaseQuantity(key))}>+</QuantityButton>
+                      </ProductAmountContainer>
+                      <ProductPrice>
+                        {product.price * product.quantity} Ft
+                      </ProductPrice>
+                      <RemoveButton onClick={() => dispatch(removeProduct(key))}>
+                        Törlés
+                      </RemoveButton>
+                    </PriceDetail>
+                  </Product>
+                );
+              })}
               <Hr />
             </Info>
             <Summary>
@@ -361,7 +366,6 @@ const Cart = () => {
               </SummaryItem>
               <StripeCheckout
                 name="FLEXZONE"
-                image="/images/flexzone_circle.png"
                 billingAddress
                 shippingAddress
                 description={`A végösszeg ${cart.total} Ft`}

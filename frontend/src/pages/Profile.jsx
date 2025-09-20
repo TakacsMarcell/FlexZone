@@ -202,6 +202,7 @@ const Profile = () => {
     height: user?.height ?? "",
     gender: user?.gender ?? "",
     targetWeight: user?.targetWeight ?? "", 
+    fitnessLevel: user?.fitnessLevel ?? "", 
     createdAt: user?.createdAt || "",
   });
 
@@ -216,6 +217,7 @@ const Profile = () => {
         height: user.height ?? "",
         gender: user.gender ?? "",
         targetWeight: user.targetWeight ?? "",
+        fitnessLevel: user.fitnessLevel ?? "",
         createdAt: user.createdAt,
       });
     }
@@ -243,6 +245,7 @@ const Profile = () => {
         height: toNumberOrNull(profileData.height),
         targetWeight: toNumberOrNull(profileData.targetWeight),
         gender: profileData.gender || null,
+        fitnessLevel: profileData.fitnessLevel || null, 
       };
 
       const res = await userRequest.put(`/users/${user._id}`, payload);
@@ -339,6 +342,19 @@ const Profile = () => {
                   <option value="male">Férfi</option>
                   <option value="female">Nő</option>
                   <option value="other">Egyéb</option>
+                </Select>
+              </FormItem>
+              <FormItem>
+                <Label>Edzettségi szint</Label>
+                <Select
+                  name="fitnessLevel"
+                  value={profileData.fitnessLevel}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Nincs kiválasztva</option>
+                  <option value="kezdo">Kezdő</option>
+                  <option value="halado">Haladó</option>
+                  <option value="profi">Profi</option>
                 </Select>
               </FormItem>
               <SaveButton type="submit">Adatok mentése</SaveButton>

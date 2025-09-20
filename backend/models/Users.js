@@ -12,6 +12,12 @@ const UserSchema = new mongoose.Schema(
     gender:   { type: String },
     targetWeight: { type: Number, default: null },
 
+    fitnessLevel: { 
+      type: String, 
+      enum: ["kezdo", "halado", "profi", null], 
+      default: null 
+    },
+
     resetPasswordToken:  { type: String, default: null },
     resetPasswordExpire: { type: Date,   default: null },
   },

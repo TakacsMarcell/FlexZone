@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Slider from "../components/Slider";
 import Motivation from "../components/Motivation";
+import Tips from "../components/Tips";
 
 const Home = () => {
   return (
@@ -12,6 +13,7 @@ const Home = () => {
       <Announcement />
       <Navbar />
       <Slider/>
+      <Tips />
       <Motivation/>
       <Footer/>
 

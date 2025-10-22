@@ -20,6 +20,7 @@ const transporter = nodemailer.createTransport({
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 
 // REGISTER
+
 router.post("/register", async (req, res) => {
   const newUser = new User({
     username: req.body.username,
@@ -42,7 +43,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    if (!user) return res.status(401).json("Wrong username or password!");
+    if (!user) return res.status(401).json("Wrong username!");
 
     const hashedPassword = CryptoJS.AES.decrypt(
       user.password,
@@ -51,7 +52,7 @@ router.post("/login", async (req, res) => {
     const OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
     if (OriginalPassword !== req.body.password)
-      return res.status(401).json("Wrong username or password!");
+      return res.status(401).json("Wrong password!");
 
     const accessToken = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin },

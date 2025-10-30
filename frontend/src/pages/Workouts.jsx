@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import Navbar from "../components/Navbar";
 import Announcement from "../components/Announcement";
@@ -135,6 +135,45 @@ const ExerciseRow = styled.label`
   .desc { grid-column: 2 / -1; font-size: 12px; color: #a8a8a8; margin-top: 4px; }
 `;
 
+const DonutWrap = styled.div`
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+`;
+const Donut = styled.div`
+  --size: 160px;
+  --bg: #101010;
+  --track: #232323;
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background:
+    conic-gradient(#65c466 ${({deg}) => deg}deg, #273327 ${({deg}) => deg}deg 360deg);
+  box-shadow: inset 0 0 20px rgba(0,0,0,.45);
+  border: 1px solid #2a2a2a;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 18px;
+    border-radius: 50%;
+    background: var(--bg);
+    box-shadow: inset 0 0 0 1px var(--track);
+  }
+`;
+const DonutCenter = styled.div`
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  > div { position: relative; top: 2px; }
+  .big { font-size: 22px; font-weight: 800; color: #eaffea; }
+  .sub { font-size: 12px; color: #a8e1aa; margin-top: 2px; }
+`;
+
 const fetchProgress = async (plans, userId) => {
   const results = await Promise.all(plans.map(async (p) => {
     try {
@@ -162,12 +201,15 @@ const Workouts = () => {
   const [gender, setGender] = useState("male");
 
   const [recommended, setRecommended] = useState([]);
-  const [plans, setPlans] = useState([]);
+  const [plans, setPlans] = useState([]);           
   const [loadingPlans, setLoadingPlans] = useState(false);
 
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [checked, setChecked] = useState([]);
-  const [progressMap, setProgressMap] = useState({});
+  const [progressMap, setProgressMap] = useState({}); 
+
+  const [allPlans, setAllPlans] = useState([]);
+  const [allProgressMap, setAllProgressMap] = useState({});
 
   useEffect(() => {
     const loadRec = async () => {
@@ -182,6 +224,22 @@ const Workouts = () => {
       } catch (e) { console.error(e); }
     };
     loadRec();
+  }, [user]);
+
+  useEffect(() => {
+    const loadAllGlobal = async () => {
+      try {
+        const res = await publicRequest.get(`/workouts`); 
+        setAllPlans(res.data || []);
+        if (user?._id && res.data?.length) {
+          const map = await fetchProgress(res.data, user._id);
+          setAllProgressMap(map);
+        } else {
+          setAllProgressMap({});
+        }
+      } catch (e) { console.error(e); }
+    };
+    loadAllGlobal();
   }, [user]);
 
   useEffect(() => {
@@ -227,6 +285,7 @@ const Workouts = () => {
           planId: selectedPlan._id,
           completedExercises: newChecked,
         });
+
         setProgressMap(prev => ({
           ...prev,
           [selectedPlan._id]: {
@@ -235,6 +294,18 @@ const Workouts = () => {
             completed: newChecked.length === (selectedPlan.exercises?.length || 0),
           }
         }));
+
+        setAllProgressMap(prev => {
+          if (!prev[selectedPlan._id]) return prev;
+          return {
+            ...prev,
+            [selectedPlan._id]: {
+              done: newChecked.length,
+              total: selectedPlan.exercises?.length || 0,
+              completed: newChecked.length === (selectedPlan.exercises?.length || 0),
+            }
+          };
+        });
       } catch (e) { console.error("Mentési hiba:", e); }
     }
   };
@@ -261,12 +332,44 @@ const Workouts = () => {
     );
   };
 
+  const totalAllPlans = allPlans.length;
+  const completedAllPlans = useMemo(() => {
+    return allPlans.reduce((acc, p) => {
+      const pr = allProgressMap[p._id] || {};
+      const total = pr.total || (p.exercises?.length || 0);
+      const done = pr.done || 0;
+      return acc + (total > 0 && done === total ? 1 : 0);
+    }, 0);
+  }, [allPlans, allProgressMap]);
+
+  const donutPct = totalAllPlans ? Math.round((completedAllPlans / totalAllPlans) * 100) : 0;
+  const donutDeg = donutPct * 3.6;
+
   return (
     <Page>
       <Announcement />
       <Navbar />
       <Wrapper>
         <LeftCol>
+          <Section>
+            <SectionTitle>Elvégzett edzéstervek</SectionTitle>
+            {totalAllPlans === 0 ? (
+              <p style={{opacity:.8}}>Nincs adat a kimutatáshoz.</p>
+            ) : (
+              <DonutWrap>
+                <div style={{position:"relative"}}>
+                  <Donut deg={donutDeg} />
+                  <DonutCenter>
+                    <div>
+                      <div className="big">{completedAllPlans}/{totalAllPlans}</div>
+                      <div className="sub">kész edzésterv • {donutPct}%</div>
+                    </div>
+                  </DonutCenter>
+                </div>
+              </DonutWrap>
+            )}
+          </Section>
+
           <Section>
             <SectionTitle>Neked ajánlott</SectionTitle>
             {recommended.length === 0 

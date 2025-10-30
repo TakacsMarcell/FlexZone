@@ -4,6 +4,7 @@ import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useState } from "react";
 import { publicRequest } from "../requestMethods";
 import background from '../images/background.png';
+import Modal from "../components/Modal"; 
 
 const Container = styled.div`
   width: 100vw;
@@ -77,8 +78,20 @@ const Agreement = styled.span`
   margin: 20px 0px;
   text-align: center;
   color: #555;
+  line-height: 1.4;
 
   ${mobile({ fontSize: "11px" })}
+`;
+
+const LinkText = styled.span`
+  font-weight: bold;
+  color: #65C466;
+  cursor: pointer;
+  text-decoration: underline;
+
+  &:hover {
+    color: #4DAA52;
+  }
 `;
 
 const Button = styled.button`
@@ -92,8 +105,8 @@ const Button = styled.button`
   font-size: 16px;
   font-weight: bold;
   margin-top: 10px;
-
   transition: all 0.3s ease;
+
   &:hover {
     background-color: #4DAA52;
   }
@@ -127,6 +140,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const history = useHistory();
 
   const handleSubmit = async (e) => {
@@ -174,14 +188,39 @@ const Register = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <Agreement>
-            A fiók létrehozásával hozzájárulok személyes adataim feldolgozásához.
-            <b> ADATKEZELÉSI TÁJÉKOZTATÓ</b>
+            A fiók létrehozásával hozzájárulok személyes adataim feldolgozásához.{" "}
+            <LinkText onClick={() => setIsModalOpen(true)}>
+              ADATKEZELÉSI TÁJÉKOZTATÓ
+            </LinkText>
           </Agreement>
           {error && <ErrorMessage>{error}</ErrorMessage>}
           <Button type="submit">REGISZTRÁCIÓ</Button>
         </Form>
         <StyledLink to="/">VISSZA A FŐOLDALRA</StyledLink>
       </Wrapper>
+
+      {isModalOpen && (
+        <Modal
+          title="Adatkezelési Tájékoztató"
+          onClose={() => setIsModalOpen(false)}
+        >
+          <p>
+            Az Ön személyes adatait a vonatkozó adatvédelmi jogszabályoknak
+            megfelelően kezeljük. Az adatkezelés célja a felhasználói fiók
+            létrehozása és a szolgáltatás nyújtása. Az adatok kezelője a weboldal
+            üzemeltetője.
+          </p>
+          <p>
+            Az adatokhoz kizárólag a szolgáltatás működéséhez szükséges személyek
+            férhetnek hozzá. Az adatokat harmadik félnek nem adjuk át, kivéve ha
+            azt jogszabály előírja.
+          </p>
+          <p>
+            Önnek jogában áll adataihoz hozzáférni, azokat módosítani, törölni
+            vagy az adatkezelés korlátozását kérni az üzemeltetőnél.
+          </p>
+        </Modal>
+      )}
     </Container>
   );
 };
